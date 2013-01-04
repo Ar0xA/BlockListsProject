@@ -146,7 +146,7 @@ def getFile(fileName):
         outputFile = open (fileName, 'w')
         outputFile.write(originalFileData)
         outputFile.close()
-        print "\nDone writing file:  {0}.\n".format(fileName)
+        print " Done writing file:  {0}.\n".format(fileName)
          
         # Parsing original data to NetWitness formatted file:
         parse2Netwitness(fileName, ipBlockLists)
