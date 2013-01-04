@@ -197,7 +197,7 @@ def createMasterNWFile(fileName, ipBlockLists):
 
 
 #|______PROGRAM STARTS HERE_______________________________________________________________________|
-if __main__ == "__main__":
+if __name__ == "__main__":
     # If "Block Lists" directory does not exist, make it else, move on.
     if not os.path.exists(os.path.expanduser("~/Desktop/Block Lists")):
         os.mkdir(os.path.expanduser("~/Desktop/Block Lists"))
