@@ -44,12 +44,32 @@ def parse2Netwitness(fileName,ipBlockLists):
             dataList.append(re.findall(r"^(?:[0-9]{1,3}\.){3}[0-9]{1,3}$",line))
             while len(dataList) > 0:
                 NWdata = dataList.pop()
+                
+                #####################################
+                #I dont get this check. you fill the datalist and then you pop
+                #the data off the stack you shouldnt have to check if its empty
+                #if that happens, fix your regular expression, imo
+                #
+                #But if you want to first of all its better to skip the pass and make it something like:
+                #
+                #if NWdata != []:
+                #    outputFile.write("".join(NWdata) + ", ")   
+                #or
+                #
+                #if len(NWdata) > 0:
+                #    outputFile.write("".join(NWdata) + ", ") 
+                #####################################
+
                 if NWdata == []:
                     pass
                 else:
                     outputFile.write("".join(NWdata) + ", ")
         outputFile.close()
         print "  Creation of NetWitness formated version of {0} complete!\n".format(fileName)
+    
+    ########################
+    #I don't even wanna know why you do it like this
+    #####################################
     elif fileName == "palevotracker-Domain-blocklist.txt":
         pass #place holder... do something here
     elif fileName == "zeustracker-Domain-blocklist.txt":
@@ -80,6 +100,13 @@ def getFile(fileName):
     these newly created files into netwitness (csv) format.
     '''
     print "\nProcessing file:    {0}".format(fileName)
+
+    #####################################
+    #use a dictionary
+    #http://docs.python.org/2/tutorial/datastructures.html chapter 5.5
+    #and iterate through it..this just is too ugly
+    #####################################
+
     if fileName == "palevotracker-Domain-blocklist.txt":
         url = "https://palevotracker.abuse.ch/blocklists.php?download=domainblocklist"
     elif fileName == "palevotracker-IP-blocklist.txt":
@@ -127,14 +154,24 @@ def getFile(fileName):
     opener = urllib2.build_opener(NoRedirectHandler())
     urllib2.install_opener(opener)
     response = urllib2.urlopen(url)
+
+    #####################################
+    #You don't use strings to check true false issues with, thats what booleans are for.
+    #http://docs.python.org/2/library/stdtypes.html
+    #####################################
     if response.code in (300, 301, 302, 303, 307):
+        #you dont do anything with this later in the code, so why bother?
         siteStatus = "Site Redirected"     #(this is required due to Websense sometimes blocking pages)
     elif response.code == 200:
+        #siteStatus = True
         siteStatus = "Site OK"
     else:
+        #siteStatus = False
         siteStatus = "Site Down"
    
     # If site is available, get the data...
+
+    # if siteStatus:
     if siteStatus == "Site OK":
         req = urllib2.Request(url)
         response = urllib2.urlopen(req)
@@ -164,6 +201,8 @@ def createMasterNWFile(fileName, ipBlockLists):
     # Check for existing NW master file and if there, delete it...
     masterIPNWlist = "master-IP-blocklist_NW.txt"
     fileExistance = os.path.isfile(os.path.expanduser("~\Desktop\Block Lists\{0}".format(masterIPNWlist)))
+
+    #again, drop the pass. If you see yourself writing pass, remove that statement.
     if fileExistance == True:
         os.remove(os.path.expanduser("~\Desktop\Block Lists\{0}".format(masterIPNWlist)))
     else:
@@ -180,6 +219,7 @@ def createMasterNWFile(fileName, ipBlockLists):
         IP = IPlist.pop()
         if IP != '':
             masterNWlist.append(IP)
+        #drop this statement
         else:
             pass
     # Remove duplicates and sort...        
@@ -201,6 +241,7 @@ if __name__ == "__main__":
     # If "Block Lists" directory does not exist, make it else, move on.
     if not os.path.exists(os.path.expanduser("~/Desktop/Block Lists")):
         os.mkdir(os.path.expanduser("~/Desktop/Block Lists"))
+    #drop this statement if you dont do anything there.
     else:
         pass
     
