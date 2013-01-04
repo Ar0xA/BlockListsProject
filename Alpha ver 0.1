@@ -49,7 +49,7 @@ def parse2Netwitness(fileName,ipBlockLists):
                 else:
                     outputFile.write("".join(NWdata) + ", ")
         outputFile.close()
-        print "  Creation of NetWitness formated version of {0} complete!\n\n\n".format(fileName)
+        print "  Creation of NetWitness formated version of {0} complete!\n".format(fileName)
     elif fileName == "palevotracker-Domain-blocklist.txt":
         pass #place holder... do something here
     elif fileName == "zeustracker-Domain-blocklist.txt":
@@ -190,7 +190,7 @@ def createMasterNWFile(fileName, ipBlockLists):
         ip = masterNWlist.pop()
         outputFile.write("".join(ip) + ", ")
     outputFile.close()
-    print "  Creation of master NetWitness list complete!"
+    print "  Creation of master NetWitness list complete!\n\n\n"
        
     
     
