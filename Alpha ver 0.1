@@ -197,79 +197,81 @@ def createMasterNWFile(fileName, ipBlockLists):
 
 
 #|______PROGRAM STARTS HERE_______________________________________________________________________|
-
-# If "Block Lists" directory does not exist, make it else, move on.
-if not os.path.exists(os.path.expanduser("~/Desktop/Block Lists")):
-    os.mkdir(os.path.expanduser("~/Desktop/Block Lists"))
-else:
-    pass
-
-# List of files that should be in the Block List Dir. (Have not coded for the commented out files.)
-fileList = ["palevotracker-IP-blocklist.txt", 
-#         "palevotracker-Domain-blocklist.txt",
-         "zeustracker-IP-blocklist.txt",
-#         "zeustracker-Domain-blocklist.txt",
-#         #"malware-Standard-blocklist.txt",
-#         #"malware-Agressive-blocklist.txt",
-         "malc0de-IP-blocklist.txt",
-#         "malc0de-Domain-blocklist.txt",
-         "blocklistDE-IP-blocklist.txt",
-         "spyeyetracker-IP-blocklist.txt",
-#         "spyeyetracker-Domain-blocklist.txt",
-#         "spamhausDrop-IP-blocklist.txt",
-#         "spamhausEDrop-IP-blocklist.txt",
-#         "hostfile-Domain-blocklist.txt",
-#         "malwaredomainlist-Domain-blocklist.txt"
-        ]
-fileList.sort()
-
-# List of the files from above that deal with ONLY IPs. DO NOT ALTER ORDER!... 
-# Must be the same order of the .pop() of the fileList above.
-ipBlockLists = ["spyeyetracker-IP-blocklist.txt",
-                "blocklistDE-IP-blocklist.txt",
-                "malc0de-IP-blocklist.txt",
-                "zeustracker-IP-blocklist.txt",
-                "palevotracker-IP-blocklist.txt",
-                ]
-ipBlockLists.sort()
-
-# Cycle thru fileList while checking if each file is current and pull down any missing or non current lists.
-listIndex = len(fileList)
-while listIndex > 0: 
-    listIndex = listIndex-1
-    fileName = fileList[listIndex]
-    # See if file exists...
-    fileExistance = os.path.isfile(os.path.expanduser("~\Desktop\Block Lists\{0}".format(fileName)))
-    # If file exists, check its modify date...
-    if fileExistance == True:
-        creationDate = time.strftime("%m-%d-%Y",time.localtime(os.path.getmtime(os.path.expanduser("~\Desktop\Block Lists\{0}".format(fileName)))))
-        now = datetime.datetime.now()
-        if creationDate != now.strftime("%m-%d-%Y"):
-            fileDate = "Not Current"
-            print "{0} file is NOT local or is not current.\n   Queuing for retrieval...\n".format(fileName)
-        else:
-            fileDate = "Current"
-            print "{0} file is local and current.".format(fileName)
+if __main__ == "__main__":
+    # If "Block Lists" directory does not exist, make it else, move on.
+    if not os.path.exists(os.path.expanduser("~/Desktop/Block Lists")):
+        os.mkdir(os.path.expanduser("~/Desktop/Block Lists"))
     else:
-        fileDate = "Not Current"  
+        pass
     
-    # If file not there or not current, get it...write it...parse it...and create NetWitness version...
-    if fileDate == "Not Current":
-        getFile(fileName) # This function gets the online data and calls the parse2Netwitness function as well.
-        createMasterNWFile(fileName, ipBlockLists) 
-
-
-print "\n\n All Done!...\n\n"
-copyToClipboard = raw_input("Would you like to have the NetWitness list sent to the clipboard for easy pasting?\n (Y/N) ")
-if copyToClipboard.strip() in "y Y yes YES Yes".split():
-    os.chdir(os.path.expanduser("~/Desktop/Block Lists")) 
-    NWlistString = open("master-IP-blocklist_NW.txt",'r').read()
-    pyperclip.copy('{0}'.format(NWlistString))
-    spam = pyperclip.paste()
-
-
-raw_input("Done!")
-exit()
+    # List of files that should be in the Block List Dir. (Have not coded for the commented out files.)
+    fileList = ["palevotracker-IP-blocklist.txt", 
+    #         "palevotracker-Domain-blocklist.txt",
+             "zeustracker-IP-blocklist.txt",
+    #         "zeustracker-Domain-blocklist.txt",
+    #         #"malware-Standard-blocklist.txt",
+    #         #"malware-Agressive-blocklist.txt",
+             "malc0de-IP-blocklist.txt",
+    #         "malc0de-Domain-blocklist.txt",
+             "blocklistDE-IP-blocklist.txt",
+             "spyeyetracker-IP-blocklist.txt",
+    #         "spyeyetracker-Domain-blocklist.txt",
+    #         "spamhausDrop-IP-blocklist.txt",
+    #         "spamhausEDrop-IP-blocklist.txt",
+    #         "hostfile-Domain-blocklist.txt",
+    #         "malwaredomainlist-Domain-blocklist.txt"
+            ]
+    fileList.sort()
     
-#!#!# Build Point !#!#!#!#!#!#!#!#!#!#!
+    # List of the files from above that deal with ONLY IPs. DO NOT ALTER ORDER!... 
+    # Must be the same order of the .pop() of the fileList above.
+    ipBlockLists = ["spyeyetracker-IP-blocklist.txt",
+                    "blocklistDE-IP-blocklist.txt",
+                    "malc0de-IP-blocklist.txt",
+                    "zeustracker-IP-blocklist.txt",
+                    "palevotracker-IP-blocklist.txt",
+                    ]
+    ipBlockLists.sort()
     
+    # Cycle thru fileList while checking if each file is current and pull down any missing or non current lists.
+    listIndex = len(fileList)
+    while listIndex > 0: 
+        listIndex = listIndex-1
+        fileName = fileList[listIndex]
+        # See if file exists...
+        fileExistance = os.path.isfile(os.path.expanduser("~\Desktop\Block Lists\{0}".format(fileName)))
+        # If file exists, check its modify date...
+        if fileExistance == True:
+            creationDate = time.strftime("%m-%d-%Y",time.localtime(os.path.getmtime(os.path.expanduser("~\Desktop\Block Lists\{0}".format(fileName)))))
+            now = datetime.datetime.now()
+            if creationDate != now.strftime("%m-%d-%Y"):
+                fileDate = "Not Current"
+                print "{0} file is NOT local or is not current.\n   Queuing for retrieval...\n".format(fileName)
+            else:
+                fileDate = "Current"
+                print "{0} file is local and current.".format(fileName)
+        else:
+            fileDate = "Not Current"  
+        
+        # If file not there or not current, get it...write it...parse it...and create NetWitness version...
+        if fileDate == "Not Current":
+            getFile(fileName) # This function gets the online data and calls the parse2Netwitness function as well.
+            createMasterNWFile(fileName, ipBlockLists) 
+    
+    
+    print "\n\n All Done!...\n\n"
+    copyToClipboard = raw_input("Would you like to have the NetWitness list sent to the clipboard for easy pasting?\n (Y/N) ")
+    if copyToClipboard.strip() in "y Y yes YES Yes".split():
+        os.chdir(os.path.expanduser("~/Desktop/Block Lists")) 
+        NWlistString = open("master-IP-blocklist_NW.txt",'r').read()
+        pyperclip.copy('{0}'.format(NWlistString))
+        spam = pyperclip.paste()
+    
+    
+    raw_input("Done!")
+    exit()
+        
+    #!#!# Build Point !#!#!#!#!#!#!#!#!#!#!
+    
+
+
